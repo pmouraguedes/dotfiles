@@ -10,6 +10,8 @@ export EDITOR="$VISUAL"
 # alias nvimk='NVIM_APPNAME="nvim-kickstart" nvim'
 # alias nviml='NVIM_APPNAME="nvim" nvim'
 alias v=nvim
+alias vt='nvim -c "terminal" -c "wincmd o"'
+alias vv='NVIM_APPNAME="nvim2" nvim'
 
 unset GTK_IM_MODULE
 unset QT_IM_MODULE
@@ -38,7 +40,7 @@ export PATH=~/software/idea-IC-243.23654.189/bin:$PATH
 # export NVM_DIR="$HOME/.nvm"
 # [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
+# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
 
 # Set up fzf key bindings and fuzzy completion
 # eval "$(fzf --bash)"
@@ -60,6 +62,9 @@ alias fd='fdfind'
 alias cdprojects='cd ~/projects'
 alias cdnotes='cd ~/Dropbox/slug/PMG/notes/Obsidian'
 alias cdaldi='cd ~/dev/aldi/'
+alias cddb='cd /home/pguedes/.local/share/nvim/dadbod_ui'
+
+alias lg='lazygit'
 
 # Tomcat
 #export CATALINA_HOME="/Library/Tomcat"
@@ -76,4 +81,5 @@ if [ -f '/home/pguedes/software/google-cloud-sdk/completion.bash.inc' ]; then . 
 
 export COMPOSE_PROFILES=linux
 
-source ~/dev/aldi/scoscripts/init
+source "$HOME/gebit-dotfiles/scripts/dev-misc"
+source "$HOME/gebit-dotfiles/scripts/mounttestlab"

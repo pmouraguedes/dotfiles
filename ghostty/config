@@ -46,8 +46,8 @@ font-family = JetBrainsMono Nerd Font
 font-size = 11.5
 window-inherit-font-size = false
 
-window-padding-x = 16
-window-padding-y = 16
+window-padding-x = 12
+window-padding-y = 12
 
 gtk-wide-tabs = false
 
