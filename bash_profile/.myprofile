@@ -47,7 +47,7 @@ export PATH=~/software/idea-IC-243.23654.189/bin:$PATH
 
 # alias l='eza $eza_params'
 # #alias l='eza --git-ignore $eza_params'
-# alias ll='eza --all --header --long $eza_params'
+alias ll='eza --all --header --long $eza_params'
 # alias llm='eza --all --header --long --sort=modified $eza_params'
 # alias la='eza -lbhHigUmuSa'
 # alias lx='eza -lbhHigUmuSa@'
