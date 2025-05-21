@@ -68,7 +68,7 @@ alias cddb='cd /home/pguedes/.local/share/nvim/dadbod_ui'
 
 alias lg='lazygit'
 
-export JAVA_HOME="/usr/lib/jvm/default"
+export JAVA_HOME="/usr/lib/jvm/java-1.17.0-openjdk-amd64"
 
 # Tomcat
 #export CATALINA_HOME="/Library/Tomcat"
