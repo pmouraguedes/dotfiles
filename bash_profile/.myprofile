@@ -5,6 +5,7 @@ source ~/.bash_git
 export PS1='\u@\h \[\e[32m\]\w \[\e[91m\]$(__git_ps1)\[\e[00m\]$ '
 export VISUAL="vim"
 export EDITOR="$VISUAL"
+export TERM=xterm
 
 # bind -m vi-insert '"jj": vi-movement-mode'
 # set -o vi
