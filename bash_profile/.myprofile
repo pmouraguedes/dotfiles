@@ -37,7 +37,7 @@ export MAVEN_OPTS="-Xms128m -Xmx1024m"
 export JAVA_OPTS="-Xms128m -Xmx512m"
 
 export PATH=~/go/bin:~/software/flutter/bin:~/.npm-global/bin:$PATH
-export PATH=~/bin:~/software/idea-IC-243.23654.189/bin:$PATH
+export PATH=~/bin:~/software/idea/bin:$PATH
 
 # export NVM_DIR="$HOME/.nvm"
 # [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -67,6 +67,8 @@ alias cdaldi='cd ~/dev/aldi/'
 alias cddb='cd /home/pguedes/.local/share/nvim/dadbod_ui'
 
 alias lg='lazygit'
+
+export JAVA_HOME="/usr/lib/jvm/default"
 
 # Tomcat
 #export CATALINA_HOME="/Library/Tomcat"
