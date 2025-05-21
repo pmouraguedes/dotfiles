@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+source ~/.bash_git
+
 export PS1='\u@\h \[\e[32m\]\w \[\e[91m\]$(__git_ps1)\[\e[00m\]$ '
 export VISUAL="vim"
 export EDITOR="$VISUAL"
@@ -35,7 +37,7 @@ export MAVEN_OPTS="-Xms128m -Xmx1024m"
 export JAVA_OPTS="-Xms128m -Xmx512m"
 
 export PATH=~/go/bin:~/software/flutter/bin:~/.npm-global/bin:$PATH
-export PATH=~/software/idea-IC-243.23654.189/bin:$PATH
+export PATH=~/bin:~/software/idea-IC-243.23654.189/bin:$PATH
 
 # export NVM_DIR="$HOME/.nvm"
 # [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -49,7 +51,7 @@ export PATH=~/software/idea-IC-243.23654.189/bin:$PATH
 
 # alias l='eza $eza_params'
 # #alias l='eza --git-ignore $eza_params'
-# alias ll='eza --all --header --long $eza_params'
+alias ll='eza --all --header --long $eza_params'
 # alias llm='eza --all --header --long --sort=modified $eza_params'
 # alias la='eza -lbhHigUmuSa'
 # alias lx='eza -lbhHigUmuSa@'
