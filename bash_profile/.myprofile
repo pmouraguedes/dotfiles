@@ -12,7 +12,7 @@ export TERM=xterm
 
 # alias nvimk='NVIM_APPNAME="nvim-kickstart" nvim'
 # alias nviml='NVIM_APPNAME="nvim" nvim'
-alias v=nvim
+alias v='JAVA_HOME=/usr/lib/jvm/java-1.21.0-openjdk-amd64 nvim'
 alias vt='nvim -c "terminal" -c "wincmd o"'
 alias vv='NVIM_APPNAME="nvim2" nvim'
 

@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# Exit if no password store is found
+if [ ! -d "$HOME/.password-store" ]; then
+    notify-send "Error" "Password store not found at ~/.password-store"
+    exit 1
+fi
+
+# Get list of password files, remove .gpg extension and base path
+passwords=$(find "$HOME/.password-store" -type f -name "*.gpg" | sed "s|$HOME/.password-store/||g" | sed 's/\.gpg$//')
+
+# Show rofi menu and capture selection
+selection=$(echo "$passwords" | rofi -dmenu -i -p "Select Password: " -matching fuzzy)
+
+# If a selection was made, copy the password to clipboard
+if [ -n "$selection" ]; then
+    pass show --clip "$selection" || {
+        notify-send "Error" "Failed to copy password for $selection"
+        exit 1
+    }
+    notify-send "Success" "Password for $selection copied to clipboard"
+fi

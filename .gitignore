@@ -1,0 +1,5 @@
+ssh-boku/.ssh/id_rsa
+ssh-boku/.ssh/id_rsa.bak
+ssh-boku/.ssh/testlab.pem
+ssh-boku/.ssh/testlab.pem.old
+ssh-boku/testlab.pem
