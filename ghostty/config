@@ -49,7 +49,7 @@ window-inherit-font-size = false
 window-padding-x = 12
 window-padding-y = 12
 
-gtk-wide-tabs = false
+gtk-wide-tabs = true
 
 adjust-cell-height = 5
 

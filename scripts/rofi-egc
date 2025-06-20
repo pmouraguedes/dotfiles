@@ -1,0 +1,32 @@
+#!/bin/bash
+
+# Path to your text file
+file=~/gebit-dotfiles/dmenu-data/egccards.txt
+
+# Exit if file not found
+if [ ! -f "$file" ]; then
+    notify-send "Error" "File $file not found"
+    exit 1
+fi
+
+# Get first column for rofi
+entries=$(awk -F';' '{print $1}' "$file")
+
+# Show rofi menu and capture selection
+selection=$(echo "$entries" | rofi -dmenu -i -p "Select Gift Card: " -matching fuzzy)
+
+# If a selection was made, copy corresponding second column to clipboard
+if [ -n "$selection" ]; then
+    code=$(awk -F';' -v sel="$selection" '$1==sel {print $2}' "$file")
+    if [ -n "$code" ]; then
+        if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
+            echo -n "$code" | wl-copy
+        else
+            echo -n "$code" | xclip -selection clipboard
+        fi
+        notify-send "Success" "Code for $selection copied to clipboard"
+    else
+        notify-send "Error" "No code found for $selection"
+        exit 1
+    fi
+fi
