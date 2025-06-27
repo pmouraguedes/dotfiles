@@ -2,16 +2,23 @@
 
 source ~/.bash_git
 
-export PS1='\u@\h \[\e[32m\]\w \[\e[91m\]$(__git_ps1)\[\e[00m\]$ '
-export VISUAL="vim"
+export PS1='\[\e]0;\u@\h:\w\a\]\u@\h \[\e[32m\]\w \[\e[91m\]$(__git_ps1)\[\e[00m\]$ '
+export VISUAL="nvim"
 export EDITOR="$VISUAL"
 export TERM=xterm
+
+# when the remote host does not set PS1, this falls back to the ssh command
+set-title() { echo -ne "\033]0;$*\007"; }
+ssh() {
+    ssh_cmd="ssh $*"
+    echo -ne "\033]0;${ssh_cmd}\007"
+    /usr/bin/ssh "$@"
+    echo -ne "\033]0;${USER}@${HOSTNAME}:$(pwd) $(__git_ps1)\007"
+}
 
 # bind -m vi-insert '"jj": vi-movement-mode'
 # set -o vi
 
-# alias nvimk='NVIM_APPNAME="nvim-kickstart" nvim'
-# alias nviml='NVIM_APPNAME="nvim" nvim'
 alias v='JAVA_HOME=/usr/lib/jvm/java-1.21.0-openjdk-amd64 nvim'
 alias vt='nvim -c "terminal" -c "wincmd o"'
 alias vv='NVIM_APPNAME="nvim2" nvim'
@@ -19,18 +26,20 @@ alias vv='NVIM_APPNAME="nvim2" nvim'
 unset GTK_IM_MODULE
 unset QT_IM_MODULE
 
+alias mi="make && sudo make install"
+
 # Maven
-alias mi="gmvn install"
-alias mci="gmvn clean install"
-alias mcit="gmvn clean install -DskipTests"
-alias mcidb="gmvn clean install -Pinitdb"
-alias mp="gmvn package -Pbundle"
-alias mcp="gmvn clean package -Pbundle"
-alias mt="gmvn test -DfailIfNoTests=false"
-alias mit="gmvn verify -Pintegration-test"
+alias gi="gmvn install"
+alias gci="gmvn clean install"
+alias gcit="gmvn clean install -DskipTests"
+alias gcidb="gmvn clean install -Pinitdb"
+alias gp="gmvn package -Pbundle"
+alias gcp="gmvn clean package -Pbundle"
+alias gt="gmvn test -DfailIfNoTests=false"
+# alias git="gmvn verify -Pintegration-test"
 # alias mc="gmvn clean && find . -mindepth 1 -maxdepth 2 -type d -name state -print0 | xargs -0 -I {} rm -rf {} +"
-alias mc="gmvn compile"
-alias mcc="gmvn clean compile"
+# alias gc="gmvn compile"
+# alias gcc="gmvn clean compile"
 
 export MAVEN_OPTS="-Xms128m -Xmx1024m"
 
@@ -55,7 +64,7 @@ export PATH=~/gebit-dotfiles/scripts:$PATH
 # alias l='eza $eza_params'
 # #alias l='eza --git-ignore $eza_params'
 # alias ll='eza --all --header --long $eza_params'
-alias ll='ls -la'
+alias ll='ls -lah'
 # alias llm='eza --all --header --long --sort=modified $eza_params'
 # alias la='eza -lbhHigUmuSa'
 # alias lx='eza -lbhHigUmuSa@'
@@ -63,7 +72,7 @@ alias ll='ls -la'
 # alias tree='eza --tree $eza_params'
 
 alias cat='bat'
-alias fd='fdfind'
+# alias fd='fdfind'
 
 alias cdprojects='cd ~/projects'
 alias cdnotes='cd ~/Dropbox/slug/PMG/notes/Obsidian'
@@ -93,6 +102,10 @@ export COMPOSE_PROFILES=linux
 
 source "$HOME/gebit-dotfiles/scripts/dev-misc"
 source "$HOME/gebit-dotfiles/scripts/mounttestlab"
+
+# java and dwm
+export _JAVA_AWT_WM_NONREPARENTING=1
+export AWT_TOOLKIT=MToolkit
 
 . "$HOME/.atuin/bin/env"
 
