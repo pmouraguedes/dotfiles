@@ -100,14 +100,14 @@ if [ -f '/home/pguedes/software/google-cloud-sdk/completion.bash.inc' ]; then . 
 
 export COMPOSE_PROFILES=linux
 
-source "$HOME/gebit-dotfiles/scripts/dev-misc"
-source "$HOME/gebit-dotfiles/scripts/mounttestlab"
+[ -f "$HOME/gebit-dotfiles/scripts/dev-misc" ] && source "$HOME/gebit-dotfiles/scripts/dev-misc"
+[ -f "$HOME/gebit-dotfiles/scripts/mounttestlab" ] && source "$HOME/gebit-dotfiles/scripts/mounttestlab"
 
 # java and dwm
 export _JAVA_AWT_WM_NONREPARENTING=1
 export AWT_TOOLKIT=MToolkit
 
-. "$HOME/.atuin/bin/env"
+[ -f "$HOME/.atuin/bin/env" ] && . "$HOME/.atuin/bin/env"
 
 [[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
-eval "$(atuin init bash --disable-up-arrow)"
+[ -f "$HOME/.atuin/bin/env" ] && eval "$(atuin init bash --disable-up-arrow)"
