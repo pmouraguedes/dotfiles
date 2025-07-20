@@ -60,7 +60,9 @@ background-opacity = 0.96
 # --------------------
 
 keybind = shift+right=next_tab
+keybind = ctrl+shift+l=next_tab
 keybind = shift+left=previous_tab
+keybind = ctrl+shift+h=previous_tab
 
 keybind = ctrl+shift+right=unbind
 keybind = ctrl+shift+left=unbind
@@ -68,7 +70,9 @@ keybind = ctrl+shift+left=unbind
 # keybind = ctrl+tab=last_tab
 
 keybind = ctrl+alt+left=move_tab:-1
+keybind = ctrl+shift+j=move_tab:-1
 keybind = ctrl+alt+right=move_tab:1
+keybind = ctrl+shift+k=move_tab:1
 
 # keybind = shift+left=adjust_selection:left
 # keybind = shift+right=adjust_selection:right
@@ -80,3 +84,4 @@ keybind = shift+down=scroll_page_lines:1
 
 # keybing = ctrl+= = increase_font_size
 # keybing = ctrl+- = decrease_font_size
+keybind = shift+enter=text:\n

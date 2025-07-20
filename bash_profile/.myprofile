@@ -21,6 +21,7 @@ ssh() {
 
 alias v='JAVA_HOME=/usr/lib/jvm/java-1.21.0-openjdk-amd64 nvim'
 alias vt='nvim -c "terminal" -c "wincmd o"'
+alias vs='cd ~/tmp && nvim -c "bd" "bd"'
 alias vv='NVIM_APPNAME="nvim2" nvim'
 
 unset GTK_IM_MODULE
@@ -78,8 +79,14 @@ alias cdprojects='cd ~/projects'
 alias cdnotes='cd ~/Dropbox/slug/PMG/notes/Obsidian'
 alias cdaldi='cd ~/dev/aldi/'
 alias cddb='cd /home/pguedes/.local/share/nvim/dadbod_ui'
+alias cddwm='cd ~/software/dwm/ && nvim'
+alias cdblocks='cd ~/software/dwmblocks/ && nvim'
+alias q='exit'
+alias ..='cd ..'
+alias c='clear'
 
 alias lg='lazygit'
+alias ld='lazydocker'
 alias open='xdg-open'
 
 # export JAVA_HOME="/usr/lib/jvm/java-1.17.0-openjdk-amd64"
