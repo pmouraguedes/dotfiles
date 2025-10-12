@@ -19,10 +19,17 @@ ssh() {
 # bind -m vi-insert '"jj": vi-movement-mode'
 # set -o vi
 
-alias v='JAVA_HOME=/usr/lib/jvm/java-1.21.0-openjdk-amd64 nvim'
-alias vt='nvim -c "terminal" -c "wincmd o"'
-alias vs='cd ~/tmp && nvim -c "bd" "bd"'
-alias vv='NVIM_APPNAME="nvim2" nvim'
+# main nvim
+alias v='NVIM_APPNAME="nvim4" nvim'
+# nvim in terminal mode
+alias vt='NVIM_APPNAME="nvim4" nvim -c "terminal" -c "wincmd o"'
+# open a scratch buffer
+alias vs='cd ~/tmp && NVIM_APPNAME="nvim4" nvim -c "bd" "bd"'
+
+# other nvim configurations
+alias vv='JAVA_HOME=/usr/lib/jvm/java-1.21.0-openjdk-amd64 nvim'
+alias v2='NVIM_APPNAME="nvim2" nvim'
+alias v3='NVIM_APPNAME="nvim3" nvim'
 
 unset GTK_IM_MODULE
 unset QT_IM_MODULE
@@ -86,7 +93,7 @@ alias ..='cd ..'
 alias c='clear'
 
 alias lg='lazygit'
-alias ld='lazydocker'
+alias ldo='lazydocker'
 alias open='xdg-open'
 
 # export JAVA_HOME="/usr/lib/jvm/java-1.17.0-openjdk-amd64"
@@ -118,3 +125,5 @@ export AWT_TOOLKIT=MToolkit
 
 [[ -f ~/.bash-preexec.sh ]] && source ~/.bash-preexec.sh
 [ -f "$HOME/.atuin/bin/env" ] && eval "$(atuin init bash --disable-up-arrow)"
+
+source /usr/share/doc/pkgfile/command-not-found.bash
