@@ -5,6 +5,8 @@ source ~/.bash_git
 export PS1='\[\e]0;\u@\h:\w\a\]\u@\h \[\e[32m\]\w \[\e[91m\]$(__git_ps1)\[\e[00m\]$ '
 export VISUAL="nvim"
 export EDITOR="$VISUAL"
+export SUDO_EDITOR="$VISUAL"
+export MANPAGER='nvim +Man!'
 export TERM=xterm
 
 # when the remote host does not set PS1, this falls back to the ssh command
@@ -20,14 +22,15 @@ ssh() {
 # set -o vi
 
 # main nvim
-alias v='NVIM_APPNAME="nvim4" nvim'
+alias v='nvim'
 # nvim in terminal mode
-alias vt='NVIM_APPNAME="nvim4" nvim -c "terminal" -c "wincmd o"'
+alias vt='nvim -c "terminal" -c "wincmd o"'
 # open a scratch buffer
-alias vs='cd ~/tmp && NVIM_APPNAME="nvim4" nvim -c "bd" "bd"'
+alias vs='cd ~/tmp && nvim -c "bd" "bd"'
 
 # other nvim configurations
-alias vv='JAVA_HOME=/usr/lib/jvm/java-1.21.0-openjdk-amd64 nvim'
+alias vv='JAVA_HOME=/usr/lib/jvm/java-1.21.0-openjdk-amd64 NVIM_APPNAME="nvim-lazy" nvim' # custom lazyvim
+alias vm='NVIM_APPNAME=nvim-minimax nvim'                        # minimax
 alias v2='NVIM_APPNAME="nvim2" nvim'
 alias v3='NVIM_APPNAME="nvim3" nvim'
 
@@ -35,6 +38,9 @@ unset GTK_IM_MODULE
 unset QT_IM_MODULE
 
 alias mi="make && sudo make install"
+
+# Golang - need for neotest-golang, cause it uses the -race option by default
+export CGO_ENABLED=1
 
 # Maven
 alias gi="gmvn install"
