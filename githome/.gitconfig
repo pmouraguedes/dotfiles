@@ -1,6 +1,13 @@
 [user]
 	name = Paulo Moura Guedes
-	email = paulo.moura.guedes@gebit.de
+	email = pmouraguedes@gmail.com
+
+[includeIf "gitdir:~/dev"]
+    path = ~/.gitconfig-gitlab
+
+[includeIf "gitdir:~/dev/aldi"]
+    path = ~/.gitconfig-gitlab
+
 
 [push]
 	default = simple
@@ -8,10 +15,15 @@
 	rebase = false
 [core]
 	editor = vi
-	excludesfile = /Users/pguedes/.config/git/ignore
+	excludesfile = /home/pguedes/.config/git/ignore
 	autocrlf = input
     pager = delta
 	symlinks = false
+    # Gebit:
+    ignorecase = true
+    filemode = false
+    longpaths = true
+    eol = lf
 [color]
 	ui = true
 [color "branch"]
@@ -44,3 +56,12 @@
     conflictstyle = zdiff3
 [diff]
     colorMoved = default
+    tool = nvim_difftool
+[difftool "nvim_difftool"]
+    ; cmd = NVIM_APPNAME="nvim4" nvim -c "DiffTool $LOCAL $REMOTE"
+    cmd = nvim -c \"packadd nvim.difftool\" -c \"DiffTool $LOCAL $REMOTE\"
+; Gebit
+[branch]
+    autosetupprebase = always
+[init]
+	defaultBranch = main

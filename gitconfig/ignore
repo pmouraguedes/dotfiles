@@ -1,0 +1,8 @@
+.classpath
+.factorypath
+.project
+**/.claude
+**/.jdtls-workspace
+**/eclipse-target
+**/.idea
+**/.settings
