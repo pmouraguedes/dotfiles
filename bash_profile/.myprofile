@@ -29,10 +29,12 @@ alias vt='nvim -c "terminal" -c "wincmd o"'
 alias vs='cd ~/tmp && nvim -c "bd" "bd"'
 
 # other nvim configurations
-alias vv='JAVA_HOME=/usr/lib/jvm/java-1.21.0-openjdk-amd64 NVIM_APPNAME="nvim-lazy" nvim' # custom lazyvim
+alias vv='NVIM_APPNAME="nvim-lazy" nvim' # custom lazyvim
 alias vm='NVIM_APPNAME=nvim-minimax nvim'                        # minimax
 alias v2='NVIM_APPNAME="nvim2" nvim'
 alias v3='NVIM_APPNAME="nvim3" nvim'
+
+alias startdwm='startx -- /opt/xlibre/bin/X :0 vt1'
 
 unset GTK_IM_MODULE
 unset QT_IM_MODULE
@@ -102,6 +104,11 @@ alias c='clear'
 alias lg='lazygit'
 alias ldo='lazydocker'
 alias open='xdg-open'
+alias fcd='cd $(fd -t d | fzf)'
+alias fopen='open $(fzf)'
+alias sb='source ~/dotfiles/bash_profile/.myprofile'
+alias tldr='tldr --color always'   # force color
+alias tl='tldr'                    # short version
 
 # export JAVA_HOME="/usr/lib/jvm/java-1.17.0-openjdk-amd64"
 export JAVA_HOME="/usr/lib/jvm/java-17-openjdk"
@@ -134,3 +141,7 @@ export AWT_TOOLKIT=MToolkit
 [ -f "$HOME/.atuin/bin/env" ] && eval "$(atuin init bash --disable-up-arrow)"
 
 source /usr/share/doc/pkgfile/command-not-found.bash
+
+# opencode
+export PATH=/home/pguedes/.opencode/bin:$PATH
+

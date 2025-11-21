@@ -31,6 +31,7 @@ Plug 'tpope/vim-commentary'
 Plug 'kana/vim-textobj-entire'
 " <leader>mj          |  <Plug>(easymotion-j) |
 Plug 'easymotion/vim-easymotion'
+Plug 'AlexGirardDev/HarpoonIJ'
 
 set highlightedyank
 " highlight unique matches when using f/F/t/T
@@ -236,3 +237,18 @@ let g:qs_highlight_on_keys = ['f', 'F', 't', 'T']
 " --------------------------------
 " TODO
 " buffer delete - bd
+
+" HarpoonIJ
+
+"nmap <leader><C-h> :action SetHarpoon1<cr>
+"nmap <leader><C-t> :action SetHarpoon2<cr>
+"nmap <leader><C-n> :action SetHarpoon3<cr>
+"nmap <leader><C-s> :action SetHarpoon4<cr>
+
+nmap <leader>1 :action GotoHarpoon1<cr>
+nmap <leader>2 :action GotoHarpoon2<cr>
+nmap <leader>3 :action GotoHarpoon3<cr>
+nmap <leader>4 :action GotoHarpoon4<cr>
+
+nmap <leader>h :action ShowHarpoon<cr>
+nmap <leader>H :action AddToHarpoon<cr>
