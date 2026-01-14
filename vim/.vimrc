@@ -22,6 +22,9 @@ set relativenumber number
 set termguicolors
 
 " plugins
+" curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+" :PlugInstall
+
 call plug#begin()
 
 " List your plugins here
@@ -58,7 +61,7 @@ call plug#end()
 
 " -----------------------
 " Vim colorscheme "
-colorscheme darcula
+colorscheme pablo
 "
 " mac
 "set clipboard=unnamed

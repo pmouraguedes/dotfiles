@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+function pull {
+
+    for dir in *; do
+        if [ -d "$dir" ]; then
+            cd "$dir"
+            if [ -d .git ]; then
+                echo "updating $dir..."
+                git fetch && git pull
+            else
+                pull
+            fi
+            cd ..
+        fi
+    done
+
+}
+
+pull
+
