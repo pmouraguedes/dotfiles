@@ -12,7 +12,7 @@ Plug 'tpope/vim-sensible'
 Plug 'machakann/vim-highlightedyank'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
-Plug 'doums/darcula'
+Plug 'pmouraguedes/neodarcula.nvim'
 Plug 'jasonccox/vim-wayland-clipboard'
 
 " Text objects and motions
@@ -48,7 +48,7 @@ filetype plugin indent on     " Enable plugins and indentation
 " ==============================================================================
 syntax on                     " Enable syntax highlighting
 set termguicolors             " Enable true color support
-colorscheme pablo             " Color scheme
+colorscheme neodarcula        " Color scheme
 
 set mouse=a                   " Enable mouse support
 set number                    " Show line numbers
@@ -61,7 +61,7 @@ set visualbell                " Blink cursor on error instead of beeping
 set scrolloff=10              " Keep 10 lines visible above/below cursor
 set so=5                      " Short option for scrolloff
 
-" Cursor shape in different modes (Kitty terminal)
+" Cursor shape in different modes (Kitty terminal / standard DECSCUSR sequences)
 let &t_SI = "\e[6 q"  " Insert mode - steady vertical bar
 let &t_SR = "\e[4 q"  " Replace mode - steady underline
 let &t_EI = "\e[2 q"  " Normal mode - steady block
