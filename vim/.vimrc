@@ -61,10 +61,10 @@ set visualbell                " Blink cursor on error instead of beeping
 set scrolloff=10              " Keep 10 lines visible above/below cursor
 set so=5                      " Short option for scrolloff
 
-" Cursor shape in different modes
-let &t_SI = "\<Esc>]50;CursorShape=1\x7"  " Insert mode - line
-let &t_SR = "\<Esc>]50;CursorShape=2\x7"  " Replace mode - underline
-let &t_EI = "\<Esc>]50;CursorShape=0\x7"  " Normal mode - block
+" Cursor shape in different modes (Kitty terminal)
+let &t_SI = "\e[6 q"  " Insert mode - steady vertical bar
+let &t_SR = "\e[4 q"  " Replace mode - steady underline
+let &t_EI = "\e[2 q"  " Normal mode - steady block
 
 " Whitespace characters
 set listchars=tab:>-,trail:~,extends:>,precedes:<,space:.
