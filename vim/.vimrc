@@ -1,33 +1,13 @@
+" ==============================================================================
+" VIM-PLUG SETUP
+" ==============================================================================
+" Install vim-plug if not already installed:
 " curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-" :PlugInstall
-"
-"
-" enable mouse support
-set mouse=a
-
-" Turn syntax highlighting on.
-syntax on
-
-set relativenumber number
-
-" Highlight cursor line underneath the cursor horizontally.
-"set cursorline
-":highligh Cursorline cterm=bold ctermbg=darkgray
-
-" enable color themes "
-"if !has('gui_running')
-"	set t_Co=256
-"endif
-" enable true colors support "
-set termguicolors
-
-" plugins
-" curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-" :PlugInstall
+" Then run :PlugInstall
 
 call plug#begin()
 
-" List your plugins here
+" Core plugins
 Plug 'tpope/vim-sensible'
 Plug 'machakann/vim-highlightedyank'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -35,134 +15,118 @@ Plug 'junegunn/fzf.vim'
 Plug 'doums/darcula'
 Plug 'jasonccox/vim-wayland-clipboard'
 
+" Text objects and motions
 Plug 'tpope/vim-surround'
 Plug 'justinmk/vim-sneak'
-"Type s and two chars to start sneaking in forward direction
-"Type S and two chars to start sneaking in backward direction
-"Type ; or , to proceed with sneaking just as if you were using f or t commands
+" Type s and two chars to start sneaking forward
+" Type S and two chars to start sneaking backward
+" Type ; or , to proceed with sneaking
 Plug 'vim-scripts/ReplaceWithRegister'
 Plug 'vim-scripts/argtextobj.vim'
 Plug 'dbakker/vim-paragraph-motion'
-" <count>ai	An Indentation level and line above.
-" <count>ii	Inner Indentation level (no line above).
-" <count>aI	An Indentation level and lines above/below.
-" <count>iI	Inner Indentation level (no lines above/below).
 Plug 'michaeljsmith/vim-indent-object'
-" Plug 'chrisbrah/matchit'
+" <count>ai  An Indentation level and line above
+" <count>ii  Inner Indentation level (no line above)
+" <count>aI  An Indentation level and lines above/below
+" <count>iI  Inner Indentation level (no lines above/below)
 Plug 'tpope/vim-commentary'
-" ae targets the entire content of the current buffer.
-" ie is similar to ae, but ie does not include leading and trailing empty lines.
-" Plug 'kana/vim-textobj-entire'
-" <leader>mj          |  <Plug>(easymotion-j) |
 Plug 'easymotion/vim-easymotion'
-
 
 call plug#end()
 
-" -----------------------
-" Vim colorscheme "
-colorscheme pablo
-"
-" mac
-"set clipboard=unnamed
-set clipboard=unnamedplus
+" ==============================================================================
+" BASIC SETTINGS
+" ==============================================================================
+set nocompatible              " Disable vi compatibility
+set encoding=utf-8            " UTF-8 encoding
+set hidden                    " Allow hidden buffers
+set modelines=0               " Security
+filetype plugin indent on     " Enable plugins and indentation
 
-""" Map leader to space ---------------------
-let mapleader=" "
+" ==============================================================================
+" UI & VISUAL SETTINGS
+" ==============================================================================
+syntax on                     " Enable syntax highlighting
+set termguicolors             " Enable true color support
+colorscheme pablo             " Color scheme
 
+set mouse=a                   " Enable mouse support
+set number                    " Show line numbers
+set relativenumber            " Show relative line numbers
+set ruler                     " Show file stats
+set laststatus=2              " Status bar
+set showmode                  " Show current mode
+set showcmd                   " Show command in bottom bar
+set visualbell                " Blink cursor on error instead of beeping
+set scrolloff=10              " Keep 10 lines visible above/below cursor
+set so=5                      " Short option for scrolloff
+
+" Cursor shape in different modes
+let &t_SI = "\<Esc>]50;CursorShape=1\x7"  " Insert mode - line
+let &t_SR = "\<Esc>]50;CursorShape=2\x7"  " Replace mode - underline
+let &t_EI = "\<Esc>]50;CursorShape=0\x7"  " Normal mode - block
+
+" Whitespace characters
+set listchars=tab:>-,trail:~,extends:>,precedes:<,space:.
+
+" ==============================================================================
+" SEARCH SETTINGS
+" ==============================================================================
+set incsearch                 " Incremental search
+set hlsearch                  " Highlight search results
+set ignorecase                " Case insensitive search
+set smartcase                 " Case sensitive when uppercase present
+
+" ==============================================================================
+" INDENTATION & WHITESPACE
+" ==============================================================================
+set wrap                      " Wrap lines
+set autoindent                " Auto indent
+set smartindent               " Smart indent
+set tabstop=4                 " 4 spaces for tabs
+set softtabstop=4             " 4 spaces for soft tabs
+set shiftwidth=4              " 4 spaces for indentation
+set expandtab                 " Use spaces instead of tabs
+
+" ==============================================================================
+" COMPLETION & WILDMENU
+" ==============================================================================
+set wildmenu                  " Enable auto completion menu
+set wildmode=longest:full,full " Bash-like completion
+set path+=**                  " Search down in subfolders
+set omnifunc=syntaxcomplete#Complete
+
+" ==============================================================================
+" PERFORMANCE
+" ==============================================================================
+set ttyfast                   " Fast terminal connection
+set ttimeout                  " Enable timeout for key codes
+set ttimeoutlen=1             " Fast key code timeout
+
+" ==============================================================================
+" CLIPBOARD
+" ==============================================================================
+set clipboard=unnamedplus     " Use system clipboard (Linux)
+" set clipboard=unnamed       " Use system clipboard (Mac)
+
+" ==============================================================================
+" KEY MAPPINGS
+" ==============================================================================
+let mapleader=" "             " Map leader to space
+
+" Center screen after scrolling
 nnoremap <C-d> <C-d>zz
 nnoremap <C-u> <C-u>zz
 
+" Navigate between methods and center
 nnoremap <C-f> ]mzz
 nnoremap <C-b> [mzz
 
+" Quick escape from insert mode
 inoremap jj <Esc>
 
-set showmode
-set showcmd
-set so=5
-set visualbell
-set scrolloff=10
-set ignorecase
-set smartcase
-set incsearch
-set hlsearch
-
+" ==============================================================================
+" PLUGIN SETTINGS
+" ==============================================================================
+" Highlighted yank duration
 let g:highlightedyank_highlight_duration = 250
-
-"search down in subfolders
-set path+=**
-set wildmenu
-set wildmode=longest:full,full
-
-" Disable compatibility with vi which can cause unexpected issues.
-set nocompatible
-
-" Helps force plugins to load correctly when it is turned back on below.
-filetype off
-
-" TODO: Load plugins here (pathogen or vundle, I recommend vundle)
-
-" Enable plugins and load plugin for the detected file type.
-filetype plugin indent on
-
-" Highlight cursor line underneath the cursor vertically.
-"set cursorcolumn
-
-" Set shift width to 4 spaces.
-set shiftwidth=4
-
-" Show line numbers.
-"set number
-
-" Show file stats.
-set ruler
-
-" Blink cursor on error instead of beeping.
-set visualbell
-
-" Encoding.
-set encoding=utf-8
-
-" Security.
-set modelines=0
-
-" Show color column at 80 characters width, visual reminder of keepingcode line within a popular line width.
-"set colorcolumn=80
-
-"Whitespace.
-set wrap
-set autoindent
-set smartindent
-set tabstop=4 softtabstop=4 shiftwidth=4 expandtab
-
-" Enable auto completion menu after pressing TAB.
-set wildmenu
-
-" Make wildmenu behave like similar to Bash completion.
-" set wildmode=list:longest
-
-" Allow hidden buffers.
-set hidden
-
-" Rendering.
-set ttyfast
-
-" Status bar.
-set laststatus=2
-
-" Last line.
-set showmode
-set showcmd
-
-let &t_SI = "\<Esc>]50;CursorShape=1\x7"
-let &t_SR = "\<Esc>]50;CursorShape=2\x7"
-let &t_EI = "\<Esc>]50;CursorShape=0\x7"
-
-set ttimeout
-set ttimeoutlen=1
-set listchars=tab:>-,trail:~,extends:>,precedes:<,space:.
-set ttyfast
-
-filetype plugin on
-set omnifunc=syntaxcomplete#Complete
