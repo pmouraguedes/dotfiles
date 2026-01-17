@@ -13,7 +13,7 @@ Plug 'machakann/vim-highlightedyank'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'pmouraguedes/neodarcula.nvim'
-Plug 'jasonccox/vim-wayland-clipboard'
+" Plug 'jasonccox/vim-wayland-clipboard'
 
 " Text objects and motions
 Plug 'tpope/vim-surround'
@@ -22,6 +22,7 @@ Plug 'justinmk/vim-sneak'
 " Type S and two chars to start sneaking backward
 " Type ; or , to proceed with sneaking
 Plug 'vim-scripts/ReplaceWithRegister'
+" yia
 Plug 'vim-scripts/argtextobj.vim'
 Plug 'dbakker/vim-paragraph-motion'
 Plug 'michaeljsmith/vim-indent-object'
@@ -29,6 +30,16 @@ Plug 'michaeljsmith/vim-indent-object'
 " <count>ii  Inner Indentation level (no line above)
 " <count>aI  An Indentation level and lines above/below
 " <count>iI  Inner Indentation level (no lines above/below)
+Plug 'kana/vim-textobj-user'
+Plug 'kana/vim-textobj-entire'
+" ae  Entire buffer content
+" ie  Entire buffer without leading/trailing empty lines
+Plug 'glts/vim-textobj-comment'
+" ic  Inside comment block
+" ac  Around comment block (including delimiters)
+Plug 'kana/vim-textobj-function'
+" if  Inside function
+" af  Around function (including signature)
 Plug 'tpope/vim-commentary'
 Plug 'easymotion/vim-easymotion'
 
@@ -41,6 +52,7 @@ set nocompatible              " Disable vi compatibility
 set encoding=utf-8            " UTF-8 encoding
 set hidden                    " Allow hidden buffers
 set modelines=0               " Security
+set noswapfile                " Disable swap files
 filetype plugin indent on     " Enable plugins and indentation
 
 " ==============================================================================
@@ -96,6 +108,14 @@ set wildmode=longest:full,full " Bash-like completion
 set path+=**                  " Search down in subfolders
 set omnifunc=syntaxcomplete#Complete
 
+" Ignore certain directories and files
+set wildignore+=**/venv/**,**/.venv/**
+set wildignore+=**/node_modules/**
+set wildignore+=**/.git/**
+set wildignore+=**/__pycache__/**
+set wildignore+=*.pyc,*.pyo
+set wildignore+=**/build/**,**/dist/**
+
 " ==============================================================================
 " PERFORMANCE
 " ==============================================================================
@@ -130,3 +150,14 @@ inoremap jj <Esc>
 " ==============================================================================
 " Highlighted yank duration
 let g:highlightedyank_highlight_duration = 250
+
+" ==============================================================================
+" CLIPBOARD WORKAROUND (for vim without +clipboard support)
+" ==============================================================================
+" Auto-copy yanked text to system clipboard using xclip
+if executable('xclip')
+  augroup ClipboardYank
+    autocmd!
+    autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '' | call system('xclip -selection clipboard', @0) | endif
+  augroup END
+endif
