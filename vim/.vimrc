@@ -12,6 +12,7 @@ call plug#begin()
 
 " Core plugins
 Plug 'tpope/vim-sensible'
+Plug 'tpope/vim-unimpaired'
 Plug 'machakann/vim-highlightedyank'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
@@ -92,6 +93,12 @@ set hlsearch                  " Highlight search results
 set ignorecase                " Case insensitive search
 set smartcase                 " Case sensitive when uppercase present
 
+" :grep
+if executable('rg')
+    set grepprg=rg\ --vimgrep\ --smart-case\ --hidden\ --no-heading
+    set grepformat=%f:%l:%c:%m,%f:%l:%m
+endif
+
 " ==============================================================================
 " INDENTATION & WHITESPACE
 " ==============================================================================
@@ -147,6 +154,10 @@ nnoremap <C-b> [mzz
 
 " Quick escape from insert mode
 inoremap jj <Esc>
+
+" Tab navigation
+nnoremap <M-h> :tabprevious<CR>
+nnoremap <M-l> :tabNext<CR>
 
 " ==============================================================================
 " PLUGIN SETTINGS
