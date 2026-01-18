@@ -156,7 +156,9 @@ nnoremap <C-b> [mzz
 inoremap jj <Esc>
 
 " Tab navigation
+execute "set <M-h>=\eh"
 nnoremap <M-h> :tabprevious<CR>
+execute "set <M-l>=\el"
 nnoremap <M-l> :tabNext<CR>
 
 " ==============================================================================
