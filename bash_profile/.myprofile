@@ -21,6 +21,8 @@ ssh() {
 # bind -m vi-insert '"jj": vi-movement-mode'
 # set -o vi
 
+alias vi='vim'
+
 # main nvim
 alias v='nvim'
 # nvim in terminal mode
@@ -46,7 +48,8 @@ export CGO_ENABLED=1
 
 # Maven
 alias gi="gmvn install"
-alias gci="gmvn clean install -T 8C"
+# alias gci="gmvn clean install -T 8C"
+alias gci="gmvn clean install"
 # alias gcit="gmvn clean install -DskipTests"
 alias gcit="gmvn clean install -P test"
 alias gcidb="gmvn clean install -Pinitdb"
