@@ -71,7 +71,7 @@ Plug 'tpope/vim-commentary'
 " gcc  Toggle comment for current line
 " gc{motion}  Toggle comment for motion
 " gcap  Toggle comment for paragraph
-Plug 'easymotion/vim-easymotion'
+" Plug 'easymotion/vim-easymotion'
 " <Leader><Leader>w  Jump to word start
 " <Leader><Leader>b  Jump to word backward
 " <Leader><Leader>f{char}  Find {char} forward
@@ -84,6 +84,8 @@ Plug 'jeetsukumaran/vim-buffergator'
 Plug 'tpope/vim-fugitive'
 " :Git or :G  Run any git command
 " dv  view diff
+" cc Create a commit.
+" P push
 " :Git blame or :Gblame  Show git blame
 " :Git diff or :Gdiff  Show git diff in split
 " :Gwrite  Stage current file (git add)
@@ -137,6 +139,8 @@ set showcmd                   " Show command in bottom bar
 set visualbell                " Blink cursor on error instead of beeping
 set scrolloff=10              " Keep 10 lines visible above/below cursor
 set so=5                      " Short option for scrolloff
+
+set numberwidth=4
 
 " Cursor shape in different modes (Kitty terminal / standard DECSCUSR sequences)
 let &t_SI = "\e[6 q"  " Insert mode - steady vertical bar
@@ -241,6 +245,14 @@ function! ToggleQuickfix()
 endfunction
 nnoremap <leader>xq :call ToggleQuickfix()<CR>
 
+" FZF mappings
+nnoremap <leader><Space> :Files<CR>
+nnoremap <leader>, :Buffers<CR>
+nnoremap <leader>sg :Rg<CR>
+nnoremap <leader>l :Lines<CR>
+nnoremap <leader>/ :BLines<CR>
+nnoremap <leader>h :History<CR>
+
 " Command typo corrections
 cnoreabbrev Wq wq
 cnoreabbrev WQ wq
@@ -252,9 +264,20 @@ cnoreabbrev Q q
 " ==============================================================================
 " Highlighted yank duration
 let g:highlightedyank_highlight_duration = 250
+
+" buffergator
 let g:buffergator_sort_regime = "mru"
 let g:buffergator_show_full_buffer_name = 0
 let g:buffergator_show_full_directory_path = 0
+
+" gitgutter
+let g:gitgutter_sign_column_always = 1    " always show sign column (like many do in Neovim)
+let g:gitgutter_realtime = 1
+let g:gitgutter_eager = 1
+let g:gitgutter_signs = 1                 " default anyway
+let g:gitgutter_sign_added    = '+'
+let g:gitgutter_sign_modified = '~'
+let g:gitgutter_sign_removed  = '-'
 
 " ==============================================================================
 " CLIPBOARD WORKAROUND (for vim without +clipboard support)
