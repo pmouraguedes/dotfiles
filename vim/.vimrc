@@ -71,6 +71,10 @@ Plug 'tpope/vim-commentary'
 " gcc  Toggle comment for current line
 " gc{motion}  Toggle comment for motion
 " gcap  Toggle comment for paragraph
+Plug 'junegunn/vim-easy-align'
+" ga{motion}  Start interactive alignment (e.g., gaip=)
+" vipga  Visual select + align (then type delimiter)
+" Examples: ga= align on =, ga: align on :, ga<Space> align on space
 " Plug 'easymotion/vim-easymotion'
 " <Leader><Leader>w  Jump to word start
 " <Leader><Leader>b  Jump to word backward
@@ -110,6 +114,22 @@ Plug 'kshenoy/vim-signature'
 " ]` [`  Jump to next/previous mark
 " ]' ['  Jump to start of next/previous marked line
 " m/  Show all marks in location list
+
+" Database management
+Plug 'https://tpope.io/vim/dadbod.git'
+Plug 'kristijanhusak/vim-dadbod-ui'
+Plug 'kristijanhusak/vim-dadbod-completion'
+" <Leader>D  Toggle database UI
+" :DBUI  Open database UI
+" :DB {connection} {query}  Execute query
+" Inside DBUI: o to open, S to execute query
+
+" Table mode for markdown/org tables
+Plug 'dhruvasagar/vim-table-mode'
+" <Leader>mt  Toggle table mode
+" <Leader>mr  Realign table
+" ||  Trigger table creation (when enabled)
+" |  Auto-format as you type in table mode
 
 call plug#end()
 
@@ -253,6 +273,32 @@ nnoremap <leader>l :Lines<CR>
 nnoremap <leader>/ :BLines<CR>
 nnoremap <leader>h :History<CR>
 
+" Resize window using Ctrl + arrow keys
+nnoremap <C-Up> :resize +2<CR>
+nnoremap <C-Down> :resize -2<CR>
+nnoremap <C-Left> :vertical resize -2<CR>
+nnoremap <C-Right> :vertical resize +2<CR>
+
+" Move lines with Alt-j/Alt-k
+execute "set <M-j>=\ej"
+execute "set <M-k>=\ek"
+nnoremap <M-j> :move .+1<CR>==
+nnoremap <M-k> :move .-2<CR>==
+inoremap <M-j> <Esc>:move .+1<CR>==gi
+inoremap <M-k> <Esc>:move .-2<CR>==gi
+vnoremap <M-j> :move '>+1<CR>gv=gv
+vnoremap <M-k> :move '<-2<CR>gv=gv
+
+" Indent line
+nnoremap <Tab><Tab> ==
+
+" Easy align mappings
+xmap ga <Plug>(EasyAlign)
+nmap ga <Plug>(EasyAlign)
+
+" Database UI
+nnoremap <leader>D :DBUIToggle<CR>
+
 " Command typo corrections
 cnoreabbrev Wq wq
 cnoreabbrev WQ wq
@@ -278,6 +324,17 @@ let g:gitgutter_signs = 1                 " default anyway
 let g:gitgutter_sign_added    = '+'
 let g:gitgutter_sign_modified = '~'
 let g:gitgutter_sign_removed  = '-'
+
+" dadbod-ui
+let g:db_ui_auto_execute_table_helpers = 1
+let g:db_ui_save_location = $HOME . '/.local/share/vim/dadbod_ui'
+let g:db_ui_show_database_icon = 1
+let g:db_ui_tmp_query_location = $HOME . '/.local/share/vim/dadbod_ui/tmp'
+let g:db_ui_use_nerd_fonts = 1
+let g:db_ui_execute_on_save = 0
+
+" table-mode
+let g:table_mode_map_prefix = '<leader>m'
 
 " ==============================================================================
 " CLIPBOARD WORKAROUND (for vim without +clipboard support)
