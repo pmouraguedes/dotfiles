@@ -131,6 +131,12 @@ Plug 'dhruvasagar/vim-table-mode'
 " ||  Trigger table creation (when enabled)
 " |  Auto-format as you type in table mode
 
+" Clipboard over SSH with OSC52
+Plug 'ojroques/vim-oscyank'
+" Automatically copy to system clipboard over SSH
+" <Leader>c  OSCYank in visual mode
+" Works with kitty, tmux, and other OSC52-compatible terminals
+
 call plug#end()
 
 " ==============================================================================
@@ -336,13 +342,19 @@ let g:db_ui_execute_on_save = 0
 " table-mode
 let g:table_mode_map_prefix = '<leader>m'
 
+" oscyank - Clipboard over SSH
+let g:oscyank_term = 'default'  " Auto-detect terminal
+" Automatically yank to system clipboard over SSH
+autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '' | execute 'OSCYankRegister "' | endif
+
 " ==============================================================================
 " CLIPBOARD WORKAROUND (for vim without +clipboard support)
 " ==============================================================================
 " Auto-copy yanked text to system clipboard using xclip
-if executable('xclip')
-  augroup ClipboardYank
-    autocmd!
-    autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '' | call system('xclip -selection clipboard', @0) | endif
-  augroup END
-endif
+" not needed if vim is compiled with +clipboard
+" if executable('xclip')
+"   augroup ClipboardYank
+"     autocmd!
+"     autocmd TextYankPost * if v:event.operator is 'y' && v:event.regname is '' | call system('xclip -selection clipboard', @0) | endif
+"   augroup END
+" endif
