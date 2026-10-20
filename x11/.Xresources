@@ -4,3 +4,6 @@ Xft.lcdfilter: lcddefault
 Xft.hintstyle: hintfull
 Xft.hinting: 1
 Xft.antialias: 1
+
+*.font: Adwaita Mono:style=Regular:size=12
+

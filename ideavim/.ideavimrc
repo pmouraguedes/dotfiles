@@ -33,6 +33,9 @@ Plug 'kana/vim-textobj-entire'
 Plug 'easymotion/vim-easymotion'
 Plug 'AlexGirardDev/HarpoonIJ'
 
+set VimEverywhere
+set youcompleteme
+
 set highlightedyank
 " highlight unique matches when using f/F/t/T
 set quickscope

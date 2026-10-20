@@ -2,8 +2,22 @@
 text/markdown=brave-browser.desktop;
 
 [Default Applications]
-text/html=google-chrome.desktop
-x-scheme-handler/http=google-chrome.desktop
-x-scheme-handler/https=google-chrome.desktop
-x-scheme-handler/about=google-chrome.desktop
-x-scheme-handler/unknown=google-chrome.desktop
+# chrome
+# text/html=google-chrome.desktop
+# x-scheme-handler/http=google-chrome.desktop
+# x-scheme-handler/https=google-chrome.desktop
+# x-scheme-handler/about=google-chrome.desktop
+# x-scheme-handler/unknown=google-chrome.desktop
+# brave
+text/html=brave-browser.desktop
+x-scheme-handler/http=brave-browser.desktop
+x-scheme-handler/https=brave-browser.desktop
+x-scheme-handler/about=brave-browser.desktop
+x-scheme-handler/unknown=brave-browser.desktop
+
+x-scheme-handler/postman=Postman.desktop
+x-scheme-handler/fabricagent=forticlient-register.desktop
+x-scheme-handler/claude-cli=claude-code-url-handler.desktop
+x-scheme-handler/jetbrains=jetbrainsd.desktop
+x-scheme-handler/grokbot=grok-bot.desktop
+x-scheme-handler/sand=grok-bot.desktop

@@ -1,10 +1,34 @@
-export GTK_THEME=Adwaita-dark
+# (process:249735): Adwaita-WARNING **: 10:48:48.557: Using GtkSettings:gtk-application-prefer-dark-theme with libadwaita is unsupported. Please use AdwStyleManager:color-scheme instead.
+export GTK_THEME=Adwaita:dark
 export QT_STYLE_OVERRIDE=Adwaita-Dark
 
-#xrandr --dpi 160
-feh --bg-scale Wallpapers/samarkand.png
+# dunst - a customizable and lightweight notification-daemon
+dunst &
+# NVIDIA is the primary GPU; let the Intel GPU display its share (dock/USB-C ports)
+xrandr --setprovideroutputsource modesetting NVIDIA-0
+sh ~/.screenlayout/home3.sh
+# feh — image viewer and cataloguer
+# set wallpaper
+feh --bg-scale ~/Wallpapers/RedFoliageTempleJapaneseArtWallpaper.jpg
 picom &
-#rbd -load ~/.Xresources
+# mouse buttons
+xmodmap ~/.Xmodmap
+dwmblocks &
+# https://commandmasters.com/commands/xset-linux/
+# screen saver off
+xset s off
+# xset s 60 3600
+# xscreensaver -no-splash &
+# power management timer
+# xset -dpms
+xset dpms 1800 0 0
+# keyboard: delay; repeat rate; 
+xset r rate 300 50
+# right alt as compose key
+setxkbmap -layout us -option '' -option compose:ralt
+# workaround for java apps
+wmname LG3D
+dropbox-cli start &
 xrdb -merge ~/.Xresources
-xrandr --output DP-2 --dpi 144
-exec dwm
+systemctl --user import-environment DISPLAY XAUTHORITY
+exec ~/dotfiles/scripts/startdwm

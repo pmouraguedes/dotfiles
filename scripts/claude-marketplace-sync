@@ -1,0 +1,222 @@
+#!/usr/bin/env python3
+"""claude-marketplace-sync — make a GitHub Copilot plugin-marketplace repo usable by Claude Code, locally.
+
+The company repos ship Copilot manifests under `.github/` (`.github/plugin/marketplace.json`
+and per-plugin `.github/plugin.json` or `.github/plugin/plugin.json`). Claude Code expects the
+same data under `.claude-plugin/` instead. The two JSON schemas are nearly identical, so this
+tool reads the Copilot manifests and writes the `.claude-plugin/` equivalents *in place* — without
+touching anything tracked by git.
+
+The generated files are deliberately NOT committed: the repo stays Copilot-only (company standard).
+This script adds them to `.git/info/exclude` (a local, untracked git ignore) so they never show up
+in `git status`. Re-run it any time after pulling; use `--clean` to remove everything it generated.
+
+Usage:
+    claude-marketplace-sync [REPO_PATH]      # default: current directory
+    claude-marketplace-sync --clean [REPO_PATH]
+    claude-marketplace-sync --dry-run [REPO_PATH]
+
+After generating, register the marketplace once in Claude Code:
+    /plugin marketplace add <REPO_PATH>
+then install plugins with:  /plugin install <name>@<marketplace-name>
+"""
+from __future__ import annotations
+
+import argparse
+import json
+import sys
+from pathlib import Path
+
+EXCLUDE_BEGIN = "# >>> claude-marketplace-sync (generated, do not commit) >>>"
+EXCLUDE_END = "# <<< claude-marketplace-sync <<<"
+EXCLUDE_PATTERNS = [".claude-plugin/", "**/.claude-plugin/"]
+
+# Where Copilot keeps the root marketplace manifest.
+COPILOT_MARKETPLACE = Path(".github/plugin/marketplace.json")
+# Candidate locations for a Copilot per-plugin manifest, in priority order.
+COPILOT_PLUGIN_CANDIDATES = (Path(".github/plugin/plugin.json"), Path(".github/plugin.json"))
+
+
+def load_json(path: Path) -> dict:
+    with path.open(encoding="utf-8") as fh:
+        return json.load(fh)
+
+
+def write_json(path: Path, data: dict, dry_run: bool) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    text = json.dumps(data, indent=2, ensure_ascii=False) + "\n"
+    if dry_run:
+        print(f"    [dry-run] would write {path}")
+        return
+    path.write_text(text, encoding="utf-8")
+
+
+def normalize_marketplace(data: dict) -> dict:
+    """Adjust the Copilot marketplace manifest to what Claude Code reads.
+
+    - Claude reads `description`/`version` at the top level; Copilot nests them under `metadata`.
+      Lift them up (keeping `metadata` too — extra keys are ignored).
+    - Claude's git-subdirectory source type is `git-subdir`; a Copilot `{"source":"url",...,"path":...}`
+      entry means "a subdirectory of a git repo", so rewrite it.
+    """
+    out = json.loads(json.dumps(data))  # deep copy
+    meta = out.get("metadata", {})
+    if isinstance(meta, dict):
+        out.setdefault("description", meta.get("description"))
+        out.setdefault("version", meta.get("version"))
+    out = {k: v for k, v in out.items() if v is not None}
+
+    # Keep only local plugins. Remote sources (github / url / git-subdir / npm) can't be used in a
+    # local mirror, and worse: `/plugin marketplace browse` tries to resolve every entry and an
+    # unreachable remote (e.g. an internal-only SSH GitLab) makes the WHOLE listing come back empty.
+    kept, dropped = [], []
+    for plugin in out.get("plugins", []):
+        if isinstance(plugin.get("source"), str):
+            kept.append(plugin)
+        else:
+            dropped.append(plugin.get("name", "?"))
+    out["plugins"] = kept
+    out["_dropped_remote_plugins"] = dropped  # internal: surfaced by sync(), stripped before write
+    return out
+
+
+def normalize_plugin(data: dict) -> dict:
+    """Adjust a Copilot plugin.json to what Claude Code accepts.
+
+    Copilot allows `skills` as a bare string (e.g. "skills/") or an array of paths. Claude's
+    plugin.json schema rejects those forms ("skills: Invalid input"). Claude auto-discovers skills
+    from the default `skills/<name>/SKILL.md` layout — which these plugins already use — so the
+    simplest robust fix is to drop the `skills` field entirely and rely on auto-discovery.
+    """
+    out = json.loads(json.dumps(data))  # deep copy
+    out.pop("skills", None)
+    return out
+
+
+def local_source_dir(repo: Path, source) -> Path | None:
+    """Return the on-disk plugin directory for a local `source`, or None for remote sources."""
+    if isinstance(source, str):
+        return (repo / source.lstrip("./")).resolve() if not source.startswith("/") else Path(source)
+    return None  # github/url/git-subdir/npm — Claude resolves these itself
+
+
+def find_copilot_plugin_manifest(plugin_dir: Path) -> Path | None:
+    for candidate in COPILOT_PLUGIN_CANDIDATES:
+        path = plugin_dir / candidate
+        if path.is_file():
+            return path
+    return None
+
+
+def update_git_exclude(repo: Path, remove: bool, dry_run: bool) -> None:
+    exclude = repo / ".git" / "info" / "exclude"
+    if not exclude.parent.is_dir():
+        return  # not a git repo (or worktree layout we don't recognize) — nothing to do
+    existing = exclude.read_text(encoding="utf-8") if exclude.is_file() else ""
+
+    # Strip any block we previously managed.
+    lines, keep, skipping = existing.splitlines(), [], False
+    for line in lines:
+        if line.strip() == EXCLUDE_BEGIN:
+            skipping = True
+            continue
+        if line.strip() == EXCLUDE_END:
+            skipping = False
+            continue
+        if not skipping:
+            keep.append(line)
+
+    if not remove:
+        while keep and keep[-1].strip() == "":
+            keep.pop()
+        keep.append("")
+        keep.append(EXCLUDE_BEGIN)
+        keep.extend(EXCLUDE_PATTERNS)
+        keep.append(EXCLUDE_END)
+
+    new_text = "\n".join(keep).lstrip("\n") + "\n"
+    if new_text == existing:
+        return
+    if dry_run:
+        print(f"    [dry-run] would update {exclude}")
+        return
+    exclude.write_text(new_text, encoding="utf-8")
+
+
+def clean(repo: Path, dry_run: bool) -> int:
+    removed = 0
+    for path in sorted(repo.rglob(".claude-plugin"), reverse=True):
+        if not path.is_dir():
+            continue
+        print(f"  removing {path.relative_to(repo)}")
+        if not dry_run:
+            for child in sorted(path.rglob("*"), reverse=True):
+                child.unlink() if child.is_file() else child.rmdir()
+            path.rmdir()
+        removed += 1
+    update_git_exclude(repo, remove=True, dry_run=dry_run)
+    print(f"Removed {removed} .claude-plugin director{'y' if removed == 1 else 'ies'}.")
+    return 0
+
+
+def sync(repo: Path, dry_run: bool) -> int:
+    src_marketplace = repo / COPILOT_MARKETPLACE
+    if not src_marketplace.is_file():
+        print(f"error: no Copilot marketplace manifest at {src_marketplace}", file=sys.stderr)
+        print("       (run this from a Copilot marketplace repo, or pass its path)", file=sys.stderr)
+        return 1
+
+    data = load_json(src_marketplace)
+    out_marketplace = normalize_marketplace(data)
+    dropped_remote = out_marketplace.pop("_dropped_remote_plugins", [])
+    print(f"marketplace: {out_marketplace.get('name', '?')}")
+    for name in dropped_remote:
+        print(f"  ! {name}: remote source, dropped from local mirror (unusable locally; would break browse)")
+    write_json(repo / ".claude-plugin" / "marketplace.json", out_marketplace, dry_run)
+
+    made, skipped = 0, 0
+    for plugin in data.get("plugins", []):
+        name = plugin.get("name", "?")
+        plugin_dir = local_source_dir(repo, plugin.get("source"))
+        if plugin_dir is None:
+            print(f"  - {name}: remote source, skipping plugin.json (handled by its own repo)")
+            skipped += 1
+            continue
+        if not plugin_dir.is_dir():
+            print(f"  - {name}: local dir not found ({plugin_dir}), skipping")
+            skipped += 1
+            continue
+        manifest = find_copilot_plugin_manifest(plugin_dir)
+        if manifest is None:
+            print(f"  - {name}: no Copilot plugin.json found under {plugin_dir.relative_to(repo)}, skipping")
+            skipped += 1
+            continue
+        write_json(plugin_dir / ".claude-plugin" / "plugin.json", normalize_plugin(load_json(manifest)), dry_run)
+        print(f"  - {name}: {manifest.relative_to(repo)} -> {(plugin_dir / '.claude-plugin/plugin.json').relative_to(repo)}")
+        made += 1
+
+    update_git_exclude(repo, remove=False, dry_run=dry_run)
+    print(f"\nGenerated marketplace + {made} plugin manifest(s); skipped {skipped}.")
+    print("Generated files are excluded via .git/info/exclude (not committed).")
+    if not dry_run:
+        print(f"\nNext: in Claude Code run  /plugin marketplace add {repo}")
+    return 0
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument("repo", nargs="?", default=".", help="path to the marketplace repo (default: current dir)")
+    parser.add_argument("--clean", action="store_true", help="remove all generated .claude-plugin files")
+    parser.add_argument("--dry-run", action="store_true", help="show what would happen without writing")
+    args = parser.parse_args()
+
+    repo = Path(args.repo).resolve()
+    if not repo.is_dir():
+        print(f"error: not a directory: {repo}", file=sys.stderr)
+        return 1
+
+    return clean(repo, args.dry_run) if args.clean else sync(repo, args.dry_run)
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

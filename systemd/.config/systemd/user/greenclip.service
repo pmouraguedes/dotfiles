@@ -1,0 +1,15 @@
+[Unit]
+Description=Greenclip clipboard manager daemon
+After=graphical-session.target
+PartOf=graphical-session.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/greenclip daemon
+Restart=always
+RestartSec=3
+Environment=DISPLAY=:0
+Environment=XAUTHORITY=%h/.Xauthority
+
+[Install]
+WantedBy=graphical-session.target

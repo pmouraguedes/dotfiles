@@ -1,6 +1,12 @@
-ssh-boku/.ssh/id_rsa
-ssh-boku/.ssh/id_rsa.bak
-ssh-boku/.ssh/testlab.pem
-ssh-boku/.ssh/testlab.pem.old
+# ssh: only config, known_hosts and public keys are versioned
+ssh-boku/.ssh/*
+!ssh-boku/.ssh/config
+!ssh-boku/.ssh/known_hosts
+!ssh-boku/.ssh/*.pub
 ssh-boku/testlab.pem
-ssh-boku/.ssh/id_rsa_mycontabo
+
+# backups
+*.bak
+*.bak-*
+*.bak.*
+*.old

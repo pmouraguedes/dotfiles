@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+# Start ssh-agent if not already running
+if [ -z "$SSH_AUTH_SOCK" ]; then
+    eval "$(ssh-agent -s)" > /dev/null
+fi
+
 source ~/.bash_git
 
 export PS1='\[\e]0;\u@\h:\w\a\]\u@\h \[\e[32m\]\w \[\e[91m\]$(__git_ps1)\[\e[00m\]$ '
@@ -36,7 +41,8 @@ alias vm='NVIM_APPNAME=nvim-minimax nvim'                        # minimax
 alias v2='NVIM_APPNAME="nvim2" nvim'
 alias v3='NVIM_APPNAME="nvim3" nvim'
 
-alias startdwm='startx -- /opt/xlibre/bin/X :0 vt1'
+alias startdwm='startx -- /opt/xlibre/bin/X :0 vt${XDG_VTNR:-1}'
+alias startdwm-next='startx -- /opt/xlibre-next/bin/X :0 vt${XDG_VTNR:-1}'
 
 unset GTK_IM_MODULE
 unset QT_IM_MODULE
@@ -61,6 +67,9 @@ alias gt="gmvn test -DfailIfNoTests=false"
 # alias gc="gmvn compile"
 # alias gcc="gmvn clean compile"
 
+# git
+alias gfp="git fetch && git pull"
+
 export MAVEN_OPTS="-Xms128m -Xmx1024m"
 
 # Java
@@ -70,6 +79,21 @@ export PATH=~/go/bin:~/software/flutter/bin:~/.npm-global/bin:$PATH
 export PATH=~/bin:~/software/idea/bin:$PATH
 export PATH=~/dotfiles/scripts:$PATH
 export PATH=~/gebit-dotfiles/scripts:$PATH
+# Do not put the whole cli-anything venv on PATH — its python shadows system
+# python and breaks AUR/makepkg builds (python -m build). Tools are linked into ~/bin.
+# Drop any leftover entry when re-sourcing this file (sb).
+_cli_anything_venv_bin="$HOME/.cli-anything-venv/bin"
+case ":$PATH:" in
+  *":$_cli_anything_venv_bin:"*)
+    PATH=$(printf '%s' "$PATH" | awk -v RS=: -v ORS=: -v drop="$_cli_anything_venv_bin" '$0 != drop' | sed 's/:$//')
+    export PATH
+    ;;
+esac
+unset _cli_anything_venv_bin
+export PATH="$HOME/.local/bin:$PATH"
+
+# rust
+[ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
 
 # export NVM_DIR="$HOME/.nvm"
 # [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -84,7 +108,10 @@ export PATH=~/gebit-dotfiles/scripts:$PATH
 # alias l='eza $eza_params'
 # #alias l='eza --git-ignore $eza_params'
 # alias ll='eza --all --header --long $eza_params'
+alias ls='ls --color=auto'
+alias grep='grep --color=auto'
 alias ll='ls -lah'
+# alias ll='ls -1a'
 # alias llm='eza --all --header --long --sort=modified $eza_params'
 # alias la='eza -lbhHigUmuSa'
 # alias lx='eza -lbhHigUmuSa@'
@@ -148,4 +175,8 @@ source /usr/share/doc/pkgfile/command-not-found.bash
 
 # opencode
 export PATH=/home/pguedes/.opencode/bin:$PATH
+
+# grok
+export PATH="$HOME/.grok/bin:$PATH"
+[[ -r "$HOME/.grok/completions/bash/grok.bash" ]] && source "$HOME/.grok/completions/bash/grok.bash"
 
