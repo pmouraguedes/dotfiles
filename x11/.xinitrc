@@ -4,8 +4,6 @@ export QT_STYLE_OVERRIDE=Adwaita-Dark
 
 # dunst - a customizable and lightweight notification-daemon
 dunst &
-# NVIDIA is the primary GPU; let the Intel GPU display its share (dock/USB-C ports)
-xrandr --setprovideroutputsource modesetting NVIDIA-0
 sh ~/.screenlayout/home3.sh
 # feh — image viewer and cataloguer
 # set wallpaper
