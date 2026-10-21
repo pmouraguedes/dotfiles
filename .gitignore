@@ -10,3 +10,7 @@ ssh-boku/testlab.pem
 *.bak-*
 *.bak.*
 *.old
+
+# global ignore has **/.claude; version this one
+!/claude/.claude
+!/claude/.claude/CLAUDE.md
