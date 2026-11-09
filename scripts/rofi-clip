@@ -1,4 +1,3 @@
 #!/usr/bin/env bash
 
-# rofi -modi 'clipboard:greenclip print' -show clipboard
-rofi -modi "clipboard:greenclip print" -show clipboard -run-command '{cmd}'
+CM_LAUNCHER=rofi exec clipmenu "$@"

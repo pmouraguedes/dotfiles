@@ -1,0 +1,41 @@
+#!/usr/bin/env python3
+# Put an image from stdin on the clipboard and serve it until something else
+# takes ownership. Unlike xclip, GTK only answers for image targets and
+# handles large (INCR) transfers, so text-only clipboard managers can't
+# deadlock it.
+import os
+import sys
+
+data = sys.stdin.buffer.read()
+if not data:
+    sys.exit("clip-image: nothing on stdin")
+
+# detach before GTK starts any threads
+if os.fork():
+    sys.exit(0)
+os.setsid()
+
+import gi
+gi.require_version("Gtk", "3.0")
+gi.require_version("Gdk", "3.0")
+gi.require_version("GdkPixbuf", "2.0")
+from gi.repository import Gdk, GdkPixbuf, Gtk
+
+loader = GdkPixbuf.PixbufLoader()
+loader.write(data)
+loader.close()
+pixbuf = loader.get_pixbuf()
+if pixbuf is None:
+    sys.exit("clip-image: not an image")
+
+
+def on_owner_change(_clipboard, event):
+    # event.owner is set when we become the owner ourselves
+    if event.owner is None:
+        Gtk.main_quit()
+
+
+clipboard = Gtk.Clipboard.get(Gdk.SELECTION_CLIPBOARD)
+clipboard.set_image(pixbuf)
+clipboard.connect("owner-change", on_owner_change)
+Gtk.main()

@@ -29,4 +29,5 @@ wmname LG3D
 dropbox-cli start &
 xrdb -merge ~/.Xresources
 systemctl --user import-environment DISPLAY XAUTHORITY
+systemctl --user restart clipmenud
 exec ~/dotfiles/scripts/startdwm

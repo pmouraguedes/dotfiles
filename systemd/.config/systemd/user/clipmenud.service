@@ -1,0 +1,11 @@
+[Unit]
+Description=Clipmenu clipboard daemon
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/clipmenud
+Restart=always
+RestartSec=3
+TimeoutStopSec=2
+Environment=DISPLAY=:0
+Environment=XAUTHORITY=%h/.Xauthority
