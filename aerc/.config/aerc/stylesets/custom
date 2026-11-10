@@ -1,0 +1,67 @@
+# colors taken from the neodarcula nvim colorscheme
+
+*.default = true
+*.normal = true
+
+# selected row, like Visual / PmenuSel
+*.selected.bg = #214283
+*.selected.fg = #DDDDDD
+*.selected.reverse = false
+
+# unread: bright and bold; read: gray
+msglist_unread.fg = #FFFFFF
+msglist_unread.bold = true
+msglist_read.fg = #808080
+msglist_flagged.fg = #C29E4A
+msglist_deleted.fg = #606060
+msglist_marked.bg = #22535E
+msglist_marked.fg = #DDDDDD
+msglist_pill.bg = #214283
+msglist_pill.fg = #DDDDDD
+
+# folders
+dirlist_default.fg = #BCBEC4
+dirlist_unread.fg = #56A8F5
+dirlist_unread.bold = true
+
+# tabs and status line, like TabLineSel / StatusLine
+tab.fg = #808080
+tab.selected.bg = #273828
+tab.selected.fg = #DDDDDD
+tab.selected.bold = true
+title.bg = #273828
+title.fg = #DDDDDD
+title.bold = true
+header.fg = #CF8E6D
+header.bold = true
+statusline_default.bg = #273828
+statusline_default.fg = #DDDDDD
+statusline_error.fg = #BC3F3C
+statusline_success.fg = #6AAB73
+border.fg = #808080
+
+*error.fg = #BC3F3C
+*warning.fg = #C29E4A
+*success.fg = #6AAB73
+
+completion_default.bg = #151515
+completion_default.fg = #DDDDDD
+completion_pill.bg = #214283
+completion_description.fg = #7A7E85
+selector_focused.bg = #214283
+selector_focused.fg = #DDDDDD
+selector_chooser.bold = true
+part_mimetype.fg = #56A8F5
+
+[viewer]
+url.fg = #56A8F5
+url.underline = true
+header.fg = #CF8E6D
+header.bold = true
+signature.fg = #7A7E85
+diff_meta.bold = true
+diff_chunk.fg = #56A8F5
+diff_add.fg = #6AAB73
+diff_del.fg = #BC3F3C
+quote_*.fg = #6AAB73
+quote_1.fg = #7A7E85
