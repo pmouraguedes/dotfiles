@@ -19,3 +19,11 @@ Always prefer rebase to merge. When not possible, please ask.
 ## commits
 
 Use simple, human friendly messages, just like a human would write.
+
+## repos
+
+dotfiles repo is public, check for secrets before committing.
+
+## commits
+
+don't write co-authored by AI
